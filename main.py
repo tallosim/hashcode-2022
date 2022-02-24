@@ -65,11 +65,10 @@ def read_file(path):
 
 
 def write_file(path, projects):
-    MAX = 90
     with open(path, 'w') as f:
-        f.write(str(len(projects[:MAX])) + '\n')
+        f.write(str(len(projects)) + '\n')
 
-        for p in projects[:MAX]:
+        for p in projects:
             f.write(p.name + '\n')
             f.write(' '.join([c.name for c in p.contributors[:len(p.roles)]]) + '\n')
 
