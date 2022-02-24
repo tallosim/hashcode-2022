@@ -42,7 +42,6 @@ def read_file(path):
         datas = line[:-1].split(' ')
         c = int(datas[0])
         p = int(datas[1])
-    
         for i in range(c):
             line = f.readline()
             skills = dict()
