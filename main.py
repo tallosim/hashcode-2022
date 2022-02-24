@@ -28,6 +28,7 @@ class Project:
 
 def run_for_all():
     inputs = os.listdir('inputs')
+    inputs.sort()
     for input_path, letter in zip(inputs, ['a', 'b', 'c', 'd', 'e', 'f']):
         run('inputs/'+input_path, 'outputs/'+letter+'.txt')
 
