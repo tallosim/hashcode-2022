@@ -27,8 +27,8 @@ class Project:
 
 
 def run_for_all():
-    inputs = os.listdir('inputs')
-    for input_path, letter in zip(inputs, ['a', 'b', 'c', 'd', 'e', 'f']):
+    inputs = sorted(os.listdir('inputs'))
+    for input_path, letter in zip(inputs, ['a']):
         run('inputs/'+input_path, 'outputs/'+letter+'.txt')
 
 def read_file(path):
@@ -41,7 +41,6 @@ def read_file(path):
         datas = line[:-1].split(' ')
         c = int(datas[0])
         p = int(datas[1])
-    
         for i in range(c):
             line = f.readline()
             skills = dict()
