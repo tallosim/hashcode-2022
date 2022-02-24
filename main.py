@@ -28,7 +28,6 @@ class Project:
 
 def run_for_all():
     inputs = os.listdir('inputs')
-    inputs.sort()
     for input_path, letter in zip(inputs, ['a', 'b', 'c', 'd', 'e', 'f']):
         run('inputs/'+input_path, 'outputs/'+letter+'.txt')
 
@@ -42,6 +41,7 @@ def read_file(path):
         datas = line[:-1].split(' ')
         c = int(datas[0])
         p = int(datas[1])
+    
         for i in range(c):
             line = f.readline()
             skills = dict()
@@ -73,14 +73,40 @@ def write_file(path, projects):
             f.write(' '.join([c.name for c in p.contributors[:len(p.roles)]]) + '\n')
 
 
+def get_contributors(contributors, skill, level):
+    qualified = []
+    for contributor in contributors:
+        if contributor.skills[skill] >= level:
+            qualified.append(contributor)
+    return qualified
+
+
+def get_possible_contributors(contributors, projects):
+    sorted_projects = sorted(projects, key=lambda x: (-x.score, x.days))
+    done = []
+    for project in sorted_projects:
+        good = True
+        rem_contributors = contributors
+        for role in project.roles:
+            qualifieds = get_contributors(rem_contributors, role.name, role.level)
+            if len(qualifieds) < 1:
+                good = False
+                break
+            c = sorted(qualifieds, key=lambda q: len(q.skills))[0]
+            rem_contributors.remove(c)
+            project.contributors.append(c)
+
+        if good:
+            done.append(project)
+    return done
+
+
 def run(input_path, ouput_path):
     contributors, projects = read_file(input_path)
 
-    final_projects = []
-    for p in projects:
-        p.contributors = contributors
-        final_projects.append(p)
+    done_projects = get_possible_contributors(contributors, projects)
 
-    write_file(ouput_path, projects)
+    write_file(ouput_path, done_projects)
+
 
 run_for_all()
